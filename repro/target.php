@@ -1,0 +1,2 @@
+<?php
+echo "VULNERABLE: LFI SUCCESS";
