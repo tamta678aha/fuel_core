@@ -3,7 +3,8 @@
 ## 1. Local File Inclusion (LFI) in View Class
 
 **Vulnerability Type:** Local File Inclusion
-**Affected Component:** `Fuel\Core\View` and `Fuel\Core\Finder`
+**Affected Component:** `Fuel\Core\View`
+**File Path:** `classes/view.php`
 **Description:**
 The `View::forge($file)` method (and `View::set_filename`) allows specifying a view filename. This filename is passed to `Finder::search`. While `Finder` searches within configured paths, it does not strictly prevent directory traversal if the filename contains `../`.
 Specifically, `View::set_filename` passes the file path to `Finder::search`. If the path is relative (e.g., `../config.php`), `Finder` may resolve it relative to the configured search paths (like `APPPATH/views`). If traversal characters are used, it can break out of the `views` directory and include any PHP file on the system that the web user has access to.
@@ -20,6 +21,7 @@ This successfully includes `repro/target.php` which is outside the `views` direc
 
 **Vulnerability Type:** Command Injection
 **Affected Component:** `Fuel\Core\Image_Imagemagick`
+**File Path:** `classes/image/imagemagick.php`
 **Description:**
 The `Image_Imagemagick` driver constructs shell commands to execute `convert` and other ImageMagick binaries. It uses the input filename in these commands.
 The filename is wrapped in single quotes (`'`) but is not escaped using `escapeshellarg()`. If the filename contains a single quote, it can break out of the quoting and execute arbitrary commands.
